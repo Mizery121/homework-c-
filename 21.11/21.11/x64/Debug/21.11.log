@@ -1,0 +1,3 @@
+﻿  21.11.cpp
+C:\Users\artem\source\repos\21.11\21.11\21.11.cpp(55,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  21.11.vcxproj -> C:\Users\artem\source\repos\21.11\x64\Debug\21.11.exe
