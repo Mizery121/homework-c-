@@ -1,84 +1,119 @@
-﻿#include <stdio.h>
-#include <iostream>
+﻿#include <iostream>
+#include <locale>
 
-#define SIZE 5  // Размер массива 
+using namespace std;
 
 int main() {
     setlocale(LC_ALL, "RU");
-    // Исходный массив
-    int arr1[SIZE] = { 1, 2, 3, 4, 5 };
 
-    printf("Исходный массив: ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr1[i]);
-    printf("\n\n");
+    const int SIZE = 5;
+    int source[SIZE];  // Массив 
+    int destination1[SIZE];  // Для задания 1
+    int destination2[SIZE];  // Для задания 2
+    int destination3[SIZE];  // Для задания 3
+    int temp[SIZE];
 
-    //задание 1. Копирование массива
-    int arr2[SIZE];
-    int* p1 = arr1;
-    int* p2 = arr2;
+    // Ввод массива
+    cout << "Введите " << SIZE << " элементов массива:" << endl;
+    for (int i = 0; i < SIZE; ++i) {
+        cout << "Элемент " << i + 1 << ": ";
+        cin >> source[i];
+    }
+    cout << endl;
 
-    // Копирование с использованием арифметики указателей
+    // Сохраняем исходный массив
     for (int i = 0; i < SIZE; i++) {
-        *(p2 + i) = *(p1 + i);
+        temp[i] = source[i];
     }
 
-    printf("Задание 1 - Копия массива: ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr2[i]);
-    printf("\n");
+    // Задание 1. Копирование массива
+    cout << "Задание 1: Копирование массива" << endl;
+    int* ptrSrc1 = source;
+    int* ptrDst1 = destination1;
 
-    // задание 2. Реверс массива
-    int arr3[SIZE];
-    // Создание копии для реверса массива
-    for (int i = 0; i < SIZE; i++) arr3[i] = arr1[i];
+    for (int i = 0; i < SIZE; ++i) {
+        *(ptrDst1 + i) = *(ptrSrc1 + i);
+    }
 
-    int* start = arr3;
-    int* end = arr3 + SIZE - 1;
+    cout << "Исходный массив: ";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << source[i] << " ";
+    }
+    cout << endl;
+
+    cout << "Скопированный массив: ";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << destination1[i] << " ";
+    }
+    cout << endl << endl;
+
+    // Задание 2. Изменение порядка элементов на противоположный
+    cout << "Задание 2: Изменение порядка элементов на противоположный" << endl;
+
+    // Восстанавливаем исходный массив
+    for (int i = 0; i < SIZE; i++) {
+        source[i] = temp[i];
+    }
+
+    cout << "Исходный массив: ";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << source[i] << " ";
+    }
+    cout << endl;
+
+    int* start = source;
+    int* end = source + SIZE - 1;
+
+    // Копируем исходный массив
+    for (int i = 0; i < SIZE; i++) {
+        destination2[i] = source[i];
+    }
+
+    start = destination2;
+    end = destination2 + SIZE - 1;
 
     while (start < end) {
         int temp = *start;
         *start = *end;
         *end = temp;
-        start++;
-        end--;
+        ++start;
+        --end;
     }
 
-    printf("Задание 2 - Реверс массива: ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr3[i]);
-    printf("\n");
+    cout << "Массив в обратном порядке: ";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << destination2[i] << " ";
+    }
+    cout << endl << endl;
 
-    // задание 3. Копирование массива в обратном порядке
-    int arr4[SIZE];
-    int* src = arr1;
-    int* dst = arr4 + SIZE - 1;
+    // Задание 3. Копирование массива в обратном порядке
+    cout << "=== Задание 3: Копирование массива в обратном порядке ===" << endl;
 
-    // Копирование элементов в обратном порядке
+    // Восстанавливаем исходный массив
     for (int i = 0; i < SIZE; i++) {
-        *dst = *src;
-        src++;
-        dst--;
+        source[i] = temp[i];
     }
 
-    printf("Задание 3 - Копия в обратном порядке: ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr4[i]);
-    printf("\n\n");
+    cout << "Исходный массив: ";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << source[i] << " ";
+    }
+    cout << endl;
 
-    // Вывод массивов
-    printf("Итоговые массивы:\n");
-    printf("Исходный:          ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr1[i]);
-    printf("\n");
+    int* ptrSrc3 = source;
+    int* ptrDst3 = destination3 + SIZE - 1;
 
-    printf("Копия:             ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr2[i]);
-    printf("\n");
+    for (int i = 0; i < SIZE; ++i) {
+        *ptrDst3 = *ptrSrc3;
+        ++ptrSrc3;
+        --ptrDst3;
+    }
 
-    printf("Реверс:            ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr3[i]);
-    printf("\n");
-
-    printf("Копия с реверсом:  ");
-    for (int i = 0; i < SIZE; i++) printf("%d ", arr4[i]);
-    printf("\n");
+    cout << "Массив, скопированный в обратном порядке: ";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << destination3[i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
