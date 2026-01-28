@@ -1,0 +1,4 @@
+﻿  12.12.cpp
+C:\Users\artem\source\repos\12.12\12.12\12.12.cpp(19,17): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\artem\source\repos\12.12\12.12\12.12.cpp(63,17): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  12.12.vcxproj -> C:\Users\artem\source\repos\12.12\x64\Debug\12.12.exe
