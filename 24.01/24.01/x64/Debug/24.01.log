@@ -1,0 +1,4 @@
+﻿  24.01.cpp
+C:\Users\artem\source\repos\24.01\24.01\24.01.cpp(22,11): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\artem\source\repos\24.01\24.01\24.01.cpp(31,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  24.01.vcxproj -> C:\Users\artem\source\repos\24.01\x64\Debug\24.01.exe
