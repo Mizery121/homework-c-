@@ -1,178 +1,191 @@
 ﻿#include <iostream>
 #include <string>
-#include <unordered_set>
-#include <sstream>
 #include <vector>
-
 using namespace std;
 
-// структуры
-struct CharCount {
-    int letters;
-    int digits;
-    int spaces;
-    int others;
+// ЗАДАНИЕ 1: КОМПЛЕКСНЫЕ ЧИСЛА
+
+struct Complex {
+    double real;
+    double imag;
 };
 
-// 1. Реверс строки
-string reverseStringWithAlgorithm(const string& s) {
-    string reversed = s;
-    int n = reversed.length();
-    for (int i = 0; i < n / 2; i++) {
-        swap(reversed[i], reversed[n - i - 1]);
-    }
-    return reversed;
+Complex add(Complex a, Complex b) {
+    return { a.real + b.real, a.imag + b.imag };
 }
 
-string reverseStringWithLoop(const string& s) {
-    string reversed;
-    for (int i = s.length() - 1; i >= 0; i--) {
-        reversed += s[i];
-    }
-    return reversed;
+Complex subtract(Complex a, Complex b) {
+    return { a.real - b.real, a.imag - b.imag };
 }
 
-// 2. Подсчет символов
-CharCount countCharacters(const string& s) {
-    CharCount count = { 0, 0, 0, 0 };
-
-    for (char ch : s) {
-        if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
-            (ch >= 'а' && ch <= 'я') || (ch >= 'А' && ch <= 'Я')) {
-            count.letters++;
-        }
-        else if (ch >= '0' && ch <= '9') {
-            count.digits++;
-        }
-        else if (ch == ' ') {
-            count.spaces++;
-        }
-        else {
-            count.others++;
-        }
-    }
-    return count;
+Complex multiply(Complex a, Complex b) {
+    return {
+        a.real * b.real - a.imag * b.imag,
+        a.real * b.imag + a.imag * b.real
+    };
 }
 
-// 3. Удаление дубликатов
-string removeDuplicates(const string& s) {
-    string result;
-    unordered_set<char> seen;
-
-    for (char ch : s) {
-        if (seen.find(ch) == seen.end()) {
-            seen.insert(ch);
-            result += ch;
-        }
+Complex divide(Complex a, Complex b) {
+    double d = b.real * b.real + b.imag * b.imag;
+    if (d == 0) {
+        cout << "Ошибка деления на ноль!" << endl;
+        return { 0, 0 };
     }
-    return result;
+    return {
+        (a.real * b.real + a.imag * b.imag) / d,
+        (a.imag * b.real - a.real * b.imag) / d
+    };
 }
 
-// 4. Проверка префикса и суффикса
-bool startsWith(const string& s, const string& prefix) {
-    if (prefix.length() > s.length()) return false;
-
-    for (size_t i = 0; i < prefix.length(); i++) {
-        if (s[i] != prefix[i]) return false;
-    }
-    return true;
+void showComplex(Complex c) {
+    if (c.imag >= 0)
+        cout << c.real << " + " << c.imag << "i";
+    else
+        cout << c.real << " - " << -c.imag << "i";
 }
 
-bool endsWith(const string& s, const string& suffix) {
-    if (suffix.length() > s.length()) return false;
+// ЗАДАНИЕ 2: АВТОМОБИЛЬ
 
-    size_t startPos = s.length() - suffix.length();
-    for (size_t i = 0; i < suffix.length(); i++) {
-        if (s[startPos + i] != suffix[i]) return false;
-    }
-    return true;
+struct Car {
+    string brand;
+    double length;
+    double clearance;
+    double engineVolume;
+    double enginePower;
+    double wheelDiameter;
+    string color;
+    string transmission;
+};
+
+vector<Car> cars;
+
+void addCar() {
+    Car c;
+    cout << "\nМарка: "; cin >> c.brand;
+    cout << "Длина (м): "; cin >> c.length;
+    cout << "Клиренс (мм): "; cin >> c.clearance;
+    cout << "Объем двигателя (л): "; cin >> c.engineVolume;
+    cout << "Мощность (л.с.): "; cin >> c.enginePower;
+    cout << "Диаметр колес (дюймы): "; cin >> c.wheelDiameter;
+    cout << "Цвет: "; cin >> c.color;
+    cout << "Коробка (механика/автомат): "; cin >> c.transmission;
+    cars.push_back(c);
 }
 
-// 5. Форматирование имени
-string formatName(const string& fullName) {
-    stringstream ss(fullName);
-    string part;
-    vector<string> parts;
+void showCars() {
+    if (cars.empty()) {
+        cout << "Нет автомобилей" << endl;
+        return;
+    }
+    for (int i = 0; i < cars.size(); i++) {
+        cout << "\nАвтомобиль " << i + 1 << ":" << endl;
+        cout << "Марка: " << cars[i].brand << endl;
+        cout << "Длина: " << cars[i].length << " м" << endl;
+        cout << "Клиренс: " << cars[i].clearance << " мм" << endl;
+        cout << "Объем: " << cars[i].engineVolume << " л" << endl;
+        cout << "Мощность: " << cars[i].enginePower << " л.с." << endl;
+        cout << "Колеса: " << cars[i].wheelDiameter << " дюймов" << endl;
+        cout << "Цвет: " << cars[i].color << endl;
+        cout << "Коробка: " << cars[i].transmission << endl;
+    }
+}
 
-    while (ss >> part) {
-        parts.push_back(part);
+void searchCar() {
+    if (cars.empty()) {
+        cout << "Нет автомобилей для поиска" << endl;
+        return;
     }
 
-    if (parts.empty()) return "";
+    cout << "\nПоиск по:" << endl;
+    cout << "1. Марке" << endl;
+    cout << "2. Цвету" << endl;
+    cout << "3. Минимальной мощности" << endl;
+    cout << "Выбор: ";
 
-    string result = parts[0]; // Фамилия
+    int choice;
+    cin >> choice;
 
-    if (parts.size() > 1) {
-        result += " ";
-        for (size_t i = 1; i < parts.size(); i++) {
-            if (!parts[i].empty()) {
-                result += parts[i][0];
-                result += ".";
+    if (choice == 1) {
+        string brand;
+        cout << "Введите марку: "; cin >> brand;
+        for (auto& c : cars) {
+            if (c.brand == brand) {
+                cout << "Найден: " << c.brand << ", цвет: " << c.color
+                    << ", мощность: " << c.enginePower << " л.с." << endl;
             }
         }
     }
-
-    return result;
+    else if (choice == 2) {
+        string color;
+        cout << "Введите цвет: "; cin >> color;
+        for (auto& c : cars) {
+            if (c.color == color) {
+                cout << "Найден: " << c.brand << ", цвет: " << c.color
+                    << ", мощность: " << c.enginePower << " л.с." << endl;
+            }
+        }
+    }
+    else if (choice == 3) {
+        double power;
+        cout << "Минимальная мощность: "; cin >> power;
+        for (auto& c : cars) {
+            if (c.enginePower >= power) {
+                cout << "Найден: " << c.brand << ", мощность: " << c.enginePower
+                    << " л.с., цвет: " << c.color << endl;
+            }
+        }
+    }
 }
 
 
 int main() {
     setlocale(LC_ALL, "RU");
 
+    // Задание 1: Комплексные числа
+    cout << "\nЗадание 1: КОМПЛЕКСНЫЕ ЧИСЛА" << endl;
 
-    // Задание 1: Реверс строки
-    cout << "\nЗадание 1: Реверс строки\n";
-    cout << "Введите строку для реверса: ";
-    string input;
-    getline(cin, input);
+    Complex a, b;
+    cout << "Введите первое комплексное число (действительная и мнимая часть): ";
+    cin >> a.real >> a.imag;
+    cout << "Введите второе комплексное число (действительная и мнимая часть): ";
+    cin >> b.real >> b.imag;
 
-    cout << "Реверс с алгоритмом: " << reverseStringWithAlgorithm(input) << endl;
-    cout << "Реверс с циклом: " << reverseStringWithLoop(input) << endl;
+    cout << "\nA = "; showComplex(a);
+    cout << "\nB = "; showComplex(b);
 
-    // Задание 2: Подсчет символов
-    cout << "\nЗадание 2: Подсчет символов\n";
-    cout << "Введите строку для анализа: ";
-    getline(cin, input);
+    cout << "\n\nA + B = "; showComplex(add(a, b));
+    cout << "\nA - B = "; showComplex(subtract(a, b));
+    cout << "\nA * B = "; showComplex(multiply(a, b));
+    cout << "\nA / B = "; showComplex(divide(a, b));
+    cout << endl;
 
-    CharCount count = countCharacters(input);
-    cout << "Букв: " << count.letters << endl;
-    cout << "Цифр: " << count.digits << endl;
-    cout << "Пробелов: " << count.spaces << endl;
-    cout << "Других символов: " << count.others << endl;
+    // Задание 2: Автомобили
+    cout << "\nЗадание 2: АВТОМОБИЛИ" << endl;
 
-    // Задание 3: Удаление дубликатов
-    cout << "\nЗадание 3: Удаление дубликатов\n";
-    cout << "Введите строку для удаления дубликатов: ";
-    getline(cin, input);
+    // Добавление тестовых данных
+    cars = {
+        {"Toyota", 4.6, 160, 2.0, 150, 17, "белый", "автомат"},
+        {"BMW", 4.8, 140, 3.0, 249, 18, "черный", "автомат"},
+        {"Lada", 4.2, 180, 1.6, 106, 15, "красный", "механика"}
+    };
 
-    cout << "Без дубликатов: " << removeDuplicates(input) << endl;
+    cout << "\nТестовые автомобили загружены." << endl;
 
-    // Задание 4: Проверка префикса и суффикса
-    cout << "\nЗадание 4: Проверка префикса и суффикса\n";
-    cout << "Введите основную строку: ";
-    getline(cin, input);
+    // Показать все автомобили
+    cout << "\nВсе автомобили:" << endl;
+    showCars();
 
-    cout << "Введите префикс для проверки: ";
-    string prefix;
-    getline(cin, prefix);
+    // Поиск автомобиля
+    cout << "\nПоиск автомобилей" << endl;
+    searchCar();
 
-    cout << "Введите суффикс для проверки: ";
-    string suffix;
-    getline(cin, suffix);
+    // Добавление нового автомобиля
+    cout << "\nДобавление нового автомобиля" << endl;
+    addCar();
 
-    cout << "Начинается с '" << prefix << "'? "
-        << (startsWith(input, prefix) ? "true" : "false") << endl;
-    cout << "Заканчивается на '" << suffix << "'? "
-        << (endsWith(input, suffix) ? "true" : "false") << endl;
-
-    // Задание 5: Форматирование имени
-    cout << "\nЗадание 5: Форматирование имени\n";
-    cout << "Введите полное имя (Фамилия Имя Отчество): ";
-    getline(cin, input);
-
-    cout << "Форматированное имя: " << formatName(input) << endl;
-
-    cout << "\nПрограмма завершена\n";
+    // Показать обновленный список
+    cout << "\nОбновленный список автомобилей" << endl;
+    showCars();
 
     return 0;
 }
